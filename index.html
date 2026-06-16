@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJA STEAM — Competitors Roster</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@700;800;900&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#CC0022;--red-dark:#8B0016;--red-deep:#5C000E;
+  --yellow:#FFD600;--blue:#006FFF;--green:#00C853;--purple:#8B00E6;
+}
+html,body{width:100%;min-height:100vh;font-family:'Nunito',sans-serif;background:#1a0006;overflow-x:hidden;color:#fff}
+
+/* ── BACKGROUND ── */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 20% 10%, rgba(204,0,34,.55) 0%, transparent 60%),
+             radial-gradient(ellipse 60% 80% at 85% 90%, rgba(139,0,22,.7) 0%, transparent 60%),
+             linear-gradient(160deg,#1a0006 0%,#3d0010 40%,#1a0006 100%)}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(204,0,34,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(204,0,34,.12) 1px,transparent 1px);
+  background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black 40%,transparent 100%);mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black 40%,transparent 100%)}
+.orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);animation:drift var(--ot,20s) ease-in-out infinite alternate;opacity:var(--oo,.18)}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(var(--ox,40px),var(--oy,-60px)) scale(1.15)}}
+.floaters{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.fsym{position:absolute;font-family:'Fredoka One',cursive;color:rgba(255,214,0,.1);animation:float var(--t,14s) ease-in-out infinite alternate;animation-delay:var(--d,0s);user-select:none}
+@keyframes float{0%{transform:translateY(0) rotate(var(--r0,0deg))}100%{transform:translateY(var(--dy,-40px)) rotate(var(--r1,15deg))}}
+
+/* ── PAGE ── */
+.page{position:relative;z-index:10;min-height:100vh;max-width:1100px;margin:0 auto;padding:34px 22px 60px}
+
+/* ── HEADER ── */
+.hd{text-align:center;margin-bottom:26px;animation:in .6s ease both}
+.hd-crest{font-size:46px;margin-bottom:6px;filter:drop-shadow(0 6px 14px rgba(255,214,0,.3))}
+.hd-label{font-size:clamp(10px,1.2vw,13px);font-weight:900;letter-spacing:5px;text-transform:uppercase;color:var(--yellow);opacity:.9;margin-bottom:4px}
+.hd-school{font-family:'Baloo 2',cursive;font-size:clamp(20px,3vw,34px);font-weight:900;color:#fff;line-height:1.1}
+.hd-title{font-family:'Fredoka One',cursive;font-size:clamp(30px,6vw,60px);color:var(--yellow);line-height:1;letter-spacing:1px;text-shadow:0 6px 26px rgba(255,214,0,.35),3px 3px 0 rgba(0,0,0,.25);margin-top:4px}
+.hd-sub{font-size:clamp(12px,1.6vw,16px);font-weight:700;color:rgba(255,255,255,.55);margin-top:8px}
+@keyframes in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── YEAR TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:26px 0 30px}
+.tab{font-family:'Fredoka One',cursive;font-size:clamp(15px,2vw,20px);color:#fff;background:linear-gradient(145deg,#2a0a12,#3d0d18);border:2px solid rgba(255,214,0,.18);border-radius:18px;padding:14px 28px;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s,border-color .2s;box-shadow:0 6px 0 rgba(0,0,0,.3)}
+.tab:hover{transform:translateY(-3px);border-color:rgba(255,214,0,.5)}
+.tab:active{transform:translateY(2px);box-shadow:0 3px 0 rgba(0,0,0,.3)}
+.tab.on{background:linear-gradient(135deg,var(--red),var(--red-dark));border-color:var(--yellow);box-shadow:0 6px 0 var(--red-deep),0 10px 30px rgba(204,0,34,.5)}
+.tab small{display:block;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;opacity:.6;letter-spacing:1px;margin-top:2px}
+
+/* ── GROUPS LAYOUT ── */
+.groups{display:grid;grid-template-columns:1fr 1fr;gap:22px;animation:in .5s ease both}
+@media(max-width:760px){.groups{grid-template-columns:1fr}}
+.group{background:linear-gradient(145deg,rgba(20,4,10,.85),rgba(40,8,18,.7));border:2px solid;border-radius:24px;padding:22px 20px;backdrop-filter:blur(6px)}
+.group.g1{border-color:rgba(0,111,255,.4);box-shadow:0 16px 50px rgba(0,111,255,.18)}
+.group.g2{border-color:rgba(204,0,34,.45);box-shadow:0 16px 50px rgba(204,0,34,.2)}
+.g-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:14px;border-bottom:2px solid rgba(255,255,255,.08)}
+.g-name{font-family:'Fredoka One',cursive;font-size:clamp(20px,2.6vw,26px)}
+.group.g1 .g-name{color:#66aaff}
+.group.g2 .g-name{color:#ff6680}
+.g-badge{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:20px}
+.group.g1 .g-badge{background:rgba(0,111,255,.15);color:#66aaff}
+.group.g2 .g-badge{background:rgba(204,0,34,.18);color:#ff6680}
+
+/* ── MEMBER CARD ── */
+.mlist{display:flex;flex-direction:column;gap:10px}
+.member{display:flex;align-items:center;gap:13px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:11px 13px;transition:transform .15s,background .15s,border-color .15s}
+.member:hover{transform:translateX(3px);background:rgba(255,255,255,.07)}
+.member.present{border-color:rgba(0,200,83,.5);background:rgba(0,200,83,.08)}
+.m-avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:17px;color:#fff}
+.group.g1 .m-avatar{background:linear-gradient(135deg,#004ABB,#006FFF)}
+.group.g2 .m-avatar{background:linear-gradient(135deg,var(--red-dark),var(--red))}
+.m-num{width:22px;text-align:center;font-family:'Fredoka One',cursive;font-size:15px;color:rgba(255,255,255,.35);flex-shrink:0}
+.m-name{flex:1;font-size:clamp(15px,1.7vw,18px);font-weight:800;color:#fff;outline:none;border-radius:6px;padding:3px 6px;min-height:28px;transition:background .15s}
+.m-name:focus{background:rgba(255,214,0,.1);box-shadow:0 0 0 2px rgba(255,214,0,.3)}
+.m-name:empty::before{content:'Tap to enter name…';color:rgba(255,255,255,.3);font-weight:600;font-style:italic}
+.m-check{width:34px;height:34px;border-radius:10px;border:2px solid rgba(255,255,255,.15);background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:transparent;transition:all .15s}
+.m-check:hover{border-color:rgba(0,200,83,.5)}
+.member.present .m-check{background:var(--green);border-color:var(--green);color:#fff}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin-top:28px}
+.tb-stat{font-size:14px;font-weight:800;color:rgba(255,255,255,.6);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:9px 18px}
+.tb-stat b{color:var(--green);font-family:'Fredoka One',cursive;font-size:17px}
+.tb-btn{font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;border:none;border-radius:14px;padding:11px 22px;cursor:pointer;color:#fff;transition:transform .15s,box-shadow .15s}
+.tb-btn:hover{transform:translateY(-2px)}
+.tb-btn:active{transform:translateY(1px)}
+.tb-print{background:linear-gradient(135deg,var(--purple),#6d28d9);box-shadow:0 5px 0 #4c1d95}
+.tb-reset{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);box-shadow:none}
+
+.footer{text-align:center;margin-top:40px;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18)}
+
+@media print{
+  .bg,.bg-grid,.orbs,.floaters,.tabs,.toolbar,.m-check{display:none!important}
+  body{background:#fff;color:#000}
+  .group{border:1px solid #999;box-shadow:none;background:#fff;break-inside:avoid}
+  .g-name,.hd-title,.hd-label{color:#7a0a18!important}
+  .m-name,.hd-school{color:#000!important}
+  .m-avatar{background:#7a0a18!important}
+  .groups{display:grid!important}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="bg-grid"></div>
+<div class="orbs">
+  <div class="orb" style="width:500px;height:500px;background:rgba(204,0,34,.4);top:-120px;left:-120px;--ox:60px;--oy:80px;--ot:22s"></div>
+  <div class="orb" style="width:380px;height:380px;background:rgba(0,111,255,.18);bottom:-80px;right:-60px;--ox:-50px;--oy:-70px;--ot:18s"></div>
+  <div class="orb" style="width:300px;height:300px;background:rgba(255,214,0,.1);top:42%;left:55%;--ox:-40px;--oy:50px;--ot:25s;--oo:.12"></div>
+</div>
+<div class="floaters" id="floaters"></div>
+
+<div class="page">
+  <div class="hd">
+    <div class="hd-crest">🏆</div>
+    <div class="hd-label">★ Competitors Line-up ★</div>
+    <div class="hd-school">Infant Jesus Academy</div>
+    <div class="hd-title">STEAM BATTLE</div>
+    <div class="hd-sub">Select a class to view Group 1 &amp; Group 2 candidates</div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="groups" id="groups"></div>
+
+  <div class="toolbar">
+    <div class="tb-stat">Present: <b id="present-count">0</b> / <span id="total-count">0</span></div>
+    <button class="tb-btn tb-print" onclick="window.print()">🖨️ Print Roster</button>
+    <button class="tb-btn tb-reset" onclick="resetChecks()">↺ Clear Check-ins</button>
+  </div>
+
+  <div class="footer">IJA ✦ STEAM Competition &nbsp;•&nbsp; Powered by D-MATHS Ed-Tech Hub</div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   EDIT NAMES HERE  (or just tap a name on the page to type it).
+   Year 7, 8, 11 → 4 per group.  Year 10 → 5 per group.
+   ════════════════════════════════════════════════════════════ */
+var ROSTER = {
+  'Year 7':  { g1: ['','','',''],        g2: ['','','',''] },
+  'Year 8':  { g1: ['','','',''],        g2: ['','','',''] },
+  'Year 10': { g1: ['','','','',''],     g2: ['','','','',''] },
+  'Year 11': { g1: ['','','',''],        g2: ['','','',''] }
+};
+
+var YEARS = ['Year 7','Year 8','Year 10','Year 11'];
+var current = 'Year 7';
+var STORE_KEY = 'ija_roster_v1';
+var checks = {};       /* present state, keyed "Year|group|index" */
+var names  = {};       /* edited names,  keyed "Year|group|index" */
+
+/* ── load saved names + check-ins ── */
+try{
+  var saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+  names = saved.names || {};
+  checks = saved.checks || {};
+}catch(e){}
+
+function save(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify({names:names,checks:checks})); }catch(e){}
+}
+
+function nameFor(year,grp,i){
+  var k = year+'|'+grp+'|'+i;
+  if(names[k]!==undefined) return names[k];
+  return ROSTER[year][grp][i] || '';
+}
+function initials(n){
+  n=(n||'').trim(); if(!n) return '?';
+  var p=n.split(/\s+/); return (p[0][0]+(p[1]?p[1][0]:'')).toUpperCase();
+}
+
+/* ── render tabs ── */
+function renderTabs(){
+  document.getElementById('tabs').innerHTML = YEARS.map(function(y){
+    var per = (y==='Year 10') ? 5 : 4;
+    return '<button class="tab'+(y===current?' on':'')+'" onclick="selectYear(\''+y+'\')">'+y+'<small>'+per+' vs '+per+'</small></button>';
+  }).join('');
+}
+function selectYear(y){ current=y; renderTabs(); renderGroups(); }
+
+/* ── render groups ── */
+function groupCol(year,grp,title){
+  var arr = ROSTER[year][grp];
+  var rows = arr.map(function(_,i){
+    var k = year+'|'+grp+'|'+i;
+    var nm = nameFor(year,grp,i);
+    var present = !!checks[k];
+    return '<div class="member'+(present?' present':'')+'" data-k="'+k+'">'+
+      '<div class="m-num">'+(i+1)+'</div>'+
+      '<div class="m-avatar">'+initials(nm)+'</div>'+
+      '<div class="m-name" contenteditable="true" data-k="'+k+'" oninput="editName(this)" onblur="refreshAvatar(this)">'+esc(nm)+'</div>'+
+      '<button class="m-check" onclick="toggleCheck(\''+k+'\')" title="Mark present">✓</button>'+
+    '</div>';
+  }).join('');
+  return '<div class="group '+grp+'">'+
+    '<div class="g-head"><div class="g-name">'+title+'</div><div class="g-badge">'+arr.length+' candidates</div></div>'+
+    '<div class="mlist">'+rows+'</div></div>';
+}
+function renderGroups(){
+  document.getElementById('groups').innerHTML =
+    groupCol(current,'g1','Group 1') + groupCol(current,'g2','Group 2');
+  updateCounts();
+}
+
+/* ── actions ── */
+function editName(el){
+  var k=el.getAttribute('data-k');
+  names[k]=el.textContent.trim();
+  save();
+}
+function refreshAvatar(el){
+  var card=el.closest('.member'); if(!card)return;
+  var av=card.querySelector('.m-avatar'); if(av)av.textContent=initials(el.textContent);
+}
+function toggleCheck(k){
+  checks[k]=!checks[k]; save();
+  var card=document.querySelector('.member[data-k="'+k+'"]');
+  if(card)card.classList.toggle('present',checks[k]);
+  updateCounts();
+}
+function resetChecks(){
+  if(!confirm('Clear all check-ins for every class?'))return;
+  checks={}; save(); renderGroups();
+}
+function updateCounts(){
+  var total=0,present=0;
+  YEARS.forEach(function(y){
+    ['g1','g2'].forEach(function(g){
+      ROSTER[y][g].forEach(function(_,i){
+        total++; if(checks[y+'|'+g+'|'+i])present++;
+      });
+    });
+  });
+  document.getElementById('present-count').textContent=present;
+  document.getElementById('total-count').textContent=total;
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ── floating symbols ── */
+(function(){
+  var syms=['π','√','∑','∞','∫','Δ','θ','±','÷','×','²','³','≠','≥','α','β'];
+  var fl=document.getElementById('floaters');
+  for(var i=0;i<22;i++){var d=document.createElement('div');d.className='fsym';d.textContent=syms[i%syms.length];
+    var size=18+Math.random()*46;
+    d.style.cssText='left:'+(Math.random()*100)+'%;top:'+(Math.random()*100)+'%;font-size:'+size+'px;--t:'+(10+Math.random()*12)+'s;--d:'+(Math.random()*8)+'s;--dy:'+(-20-Math.random()*50)+'px;--r0:'+((Math.random()-.5)*20)+'deg;--r1:'+((Math.random()-.5)*30)+'deg;';
+    fl.appendChild(d);}
+})();
+
+renderTabs();
+renderGroups();
+</script>
+</body>
+</html>
