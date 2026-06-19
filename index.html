@@ -39,6 +39,12 @@ html,body{width:100%;height:100%;font-family:'Nunito',sans-serif;background:#050
 .fighter.in.right{animation:inR .7s cubic-bezier(.18,.89,.32,1.1) forwards}
 @keyframes inL{0%{opacity:0;transform:translateX(-120%) scale(.8)}100%{opacity:1;transform:translateX(0) scale(1)}}
 @keyframes inR{0%{opacity:0;transform:translateX(120%) scale(.8)}100%{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes outL{0%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:translateX(-80%) scale(.85)}}
+@keyframes outR{0%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:translateX(80%) scale(.85)}}
+@keyframes outVS{0%{opacity:1;transform:scale(1) rotate(-7deg)}100%{opacity:0;transform:scale(2.5) rotate(12deg)}}
+.fighter.out.left{animation:outL .8s ease-in forwards}
+.fighter.out.right{animation:outR .8s ease-in forwards}
+.vs.out{animation:outVS .8s ease-in forwards}
 
 .avatar{width:clamp(120px,18vw,210px);height:clamp(120px,18vw,210px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:clamp(48px,8vw,96px);color:#fff;position:relative;border:5px solid rgba(255,255,255,.25)}
 .fighter.left .avatar{background:linear-gradient(135deg,var(--blue-dark),var(--blue));box-shadow:0 0 0 10px rgba(10,132,255,.12),0 0 60px rgba(10,132,255,.6)}
@@ -67,9 +73,7 @@ html,body{width:100%;height:100%;font-family:'Nunito',sans-serif;background:#050
 @keyframes flash{0%{opacity:0}15%{opacity:.55}100%{opacity:0}}
 
 /* ── REPLAY ── */
-.replay{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:40;font-family:'Fredoka One',cursive;font-size:16px;color:#05060c;background:linear-gradient(135deg,var(--yellow),#ff9d00);border:none;border-radius:16px;padding:13px 30px;cursor:pointer;box-shadow:0 6px 0 #a87c00,0 10px 30px rgba(255,214,0,.4);transition:transform .15s}
-.replay:hover{transform:translateX(-50%) translateY(-2px)}
-.replay:active{transform:translateX(-50%) translateY(2px);box-shadow:0 3px 0 #a87c00}
+
 
 @media(max-width:760px){
   .stage{flex-direction:column;gap:0}
@@ -113,7 +117,7 @@ html,body{width:100%;height:100%;font-family:'Nunito',sans-serif;background:#050
   </div>
 </div>
 
-<button class="replay" onclick="runBattle(true)">⚔️ Replay Battle</button>
+
 
 <script>
 var BATTLES = {
@@ -178,14 +182,16 @@ function burstSparks(){
   }
 }
 
+var _loopTimer=null;
 function runBattle(withSound){
+  if(_loopTimer){clearTimeout(_loopTimer);_loopTimer=null;}
   var fL=document.getElementById('fL'),fR=document.getElementById('fR'),vs=document.getElementById('vs'),
       shock=document.getElementById('shock'),flash=document.getElementById('flash'),stage=document.getElementById('stage');
   /* reset */
-  fL.classList.remove('in');fR.classList.remove('in');vs.classList.remove('in');
+  fL.classList.remove('in','out');fR.classList.remove('in','out');vs.classList.remove('in','out');
   shock.classList.remove('go');flash.classList.remove('go');stage.classList.remove('shake');
   void fL.offsetWidth; /* force reflow to restart animations */
-  /* fire */
+  /* fire slam-in */
   fL.classList.add('in');fR.classList.add('in');vs.classList.add('in');
   shock.classList.add('go');flash.classList.add('go');
   if(withSound){ try{ if(ax()&&ax().state==='suspended')ax().resume(); whoosh(); }catch(e){} }
@@ -194,11 +200,19 @@ function runBattle(withSound){
     burstSparks();
     if(withSound){ try{ boom(); }catch(e){} }
   }, 580);
+  /* hold 4s, then fade out, then restart */
+  _loopTimer=setTimeout(function(){
+    fL.classList.add('out');fR.classList.add('out');vs.classList.add('out');
+    _loopTimer=setTimeout(function(){ runBattle(withSound); }, 1200);
+  }, 5000);
 }
 
 renderCats();
 applyFighters();
-runBattle(false);   /* first run silent (autoplay blocked); Replay/tab = with sound */
+/* First run silent (browser blocks autoplay audio until user gesture).
+   Once user clicks a tab, sound activates and persists through the loop. */
+runBattle(false);
+document.addEventListener('click',function _unlk(){ runBattle(true); document.removeEventListener('click',_unlk); },{once:true});
 </script>
 </body>
 </html>
