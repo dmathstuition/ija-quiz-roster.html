@@ -3,216 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IJA STEAM — Final Battle</title>
+<title>🏆 CHAMPION — YEAR 10</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@700;800;900&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--blue:#0a84ff;--blue-dark:#0047AB;--red:#FF2D4B;--red-dark:#B3001B;--yellow:#FFD600;--purple:#8B00E6}
-html,body{width:100%;height:100%;font-family:'Nunito',sans-serif;background:#05060c;overflow:hidden;color:#fff}
+html,body{width:100%;height:100%;overflow:hidden;background:#05060c;font-family:'Nunito',sans-serif;color:#fff}
 
-/* ── SPLIT BATTLE BACKGROUND ── */
-.arena{position:fixed;inset:0;z-index:0;overflow:hidden}
-.arena .side{position:absolute;top:0;bottom:0;width:62%}
-.arena .left{left:0;background:linear-gradient(120deg,#001a40 0%,#003a8c 60%,#0a84ff 140%);clip-path:polygon(0 0,100% 0,82% 100%,0 100%)}
-.arena .right{right:0;background:linear-gradient(240deg,#3d0010 0%,#8b0016 60%,#ff2d4b 140%);clip-path:polygon(18% 0,100% 0,100% 100%,0 100%)}
-.arena .seam{position:absolute;top:-5%;bottom:-5%;left:50%;width:6px;transform:translateX(-50%) skewX(-9deg);background:linear-gradient(180deg,transparent,rgba(255,214,0,.9),rgba(255,255,255,.9),rgba(255,214,0,.9),transparent);filter:blur(1px);box-shadow:0 0 30px rgba(255,214,0,.7),0 0 80px rgba(255,255,255,.4);z-index:2}
-.arena .glow{position:absolute;inset:0;background:radial-gradient(ellipse 40% 60% at 18% 50%,rgba(10,132,255,.5),transparent 60%),radial-gradient(ellipse 40% 60% at 82% 50%,rgba(255,45,75,.5),transparent 60%)}
-.grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
-.sparks{position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden}
+/* ── ARENA ── */
+.arena{position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(255,214,0,.18),transparent 65%),
+             radial-gradient(ellipse 80% 70% at 50% 100%,rgba(204,0,34,.3),transparent 60%),
+             linear-gradient(180deg,#0a0a1a 0%,#12061e 50%,#1a0006 100%)}
 
-/* ── HEADER + TABS ── */
-.topbar{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;flex-direction:column;align-items:center;padding:20px 16px 0;gap:12px}
-.title{font-family:'Fredoka One',cursive;font-size:clamp(20px,3vw,34px);color:var(--yellow);letter-spacing:1px;text-shadow:0 4px 22px rgba(255,214,0,.4),3px 3px 0 rgba(0,0,0,.3);text-align:center}
-.title small{display:block;font-family:'Nunito',sans-serif;font-size:clamp(9px,1.1vw,12px);font-weight:900;letter-spacing:5px;color:rgba(255,255,255,.6);margin-bottom:2px}
-.cats{display:flex;gap:12px}
-.cat{font-family:'Fredoka One',cursive;font-size:clamp(13px,1.6vw,17px);color:#fff;background:rgba(8,10,20,.7);border:2px solid rgba(255,214,0,.25);border-radius:14px;padding:10px 22px;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.56,.64,1),border-color .18s;backdrop-filter:blur(6px)}
-.cat:hover{transform:translateY(-2px);border-color:rgba(255,214,0,.6)}
-.cat.on{background:linear-gradient(135deg,var(--purple),#6d28d9);border-color:var(--yellow);box-shadow:0 8px 26px rgba(139,0,230,.5)}
+/* Spotlight beams */
+.beams{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.beam{position:absolute;bottom:0;width:4px;height:120%;
+  transform-origin:bottom center;opacity:.12;filter:blur(2px)}
+.beam:nth-child(1){left:15%;background:linear-gradient(0deg,transparent,#FFD600);transform:rotate(-12deg);animation:sway 4s ease-in-out infinite alternate}
+.beam:nth-child(2){left:50%;background:linear-gradient(0deg,transparent,#fff);transform:rotate(0deg);animation:sway 3.5s ease-in-out infinite alternate-reverse;opacity:.18}
+.beam:nth-child(3){left:85%;background:linear-gradient(0deg,transparent,#FFD600);transform:rotate(12deg);animation:sway 4.5s ease-in-out infinite alternate}
+@keyframes sway{0%{transform:rotate(var(--r0,-12deg))}100%{transform:rotate(var(--r1,-6deg))}}
+.beam:nth-child(1){--r0:-14deg;--r1:-6deg}.beam:nth-child(2){--r0:-4deg;--r1:4deg}.beam:nth-child(3){--r0:6deg;--r1:14deg}
+
+/* Gold dust particles */
+.dust{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
 
 /* ── STAGE ── */
-.stage{position:relative;z-index:20;height:100%;display:flex;align-items:center;justify-content:center;gap:0}
-.stage.shake{animation:shake .5s cubic-bezier(.36,.07,.19,.97)}
-@keyframes shake{10%,90%{transform:translate(-2px,0)}20%,80%{transform:translate(4px,0)}30%,50%,70%{transform:translate(-8px,0)}40%,60%{transform:translate(8px,0)}}
+.stage{position:relative;z-index:10;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:20px}
 
-.fighter{flex:1;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px;opacity:0}
-.fighter.in.left{animation:inL .7s cubic-bezier(.18,.89,.32,1.1) forwards}
-.fighter.in.right{animation:inR .7s cubic-bezier(.18,.89,.32,1.1) forwards}
-@keyframes inL{0%{opacity:0;transform:translateX(-120%) scale(.8)}100%{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes inR{0%{opacity:0;transform:translateX(120%) scale(.8)}100%{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes outL{0%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:translateX(-80%) scale(.85)}}
-@keyframes outR{0%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:translateX(80%) scale(.85)}}
-@keyframes outVS{0%{opacity:1;transform:scale(1) rotate(-7deg)}100%{opacity:0;transform:scale(2.5) rotate(12deg)}}
-.fighter.out.left{animation:outL .8s ease-in forwards}
-.fighter.out.right{animation:outR .8s ease-in forwards}
-.vs.out{animation:outVS .8s ease-in forwards}
+/* School name */
+.school{font-family:'Baloo 2',cursive;font-size:clamp(12px,1.6vw,18px);font-weight:900;letter-spacing:5px;text-transform:uppercase;color:rgba(255,214,0,.7);opacity:0;animation:fadeDown .8s .3s ease forwards}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 
-.avatar{width:clamp(120px,18vw,210px);height:clamp(120px,18vw,210px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:clamp(48px,8vw,96px);color:#fff;position:relative;border:5px solid rgba(255,255,255,.25)}
-.fighter.left .avatar{background:linear-gradient(135deg,var(--blue-dark),var(--blue));box-shadow:0 0 0 10px rgba(10,132,255,.12),0 0 60px rgba(10,132,255,.6)}
-.fighter.right .avatar{background:linear-gradient(135deg,var(--red-dark),var(--red));box-shadow:0 0 0 10px rgba(255,45,75,.12),0 0 60px rgba(255,45,75,.6)}
-.avatar::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:3px solid transparent;animation:spinRing 4s linear infinite}
-.fighter.left .avatar::after{border-top-color:rgba(10,132,255,.8);border-right-color:rgba(10,132,255,.3)}
-.fighter.right .avatar::after{border-top-color:rgba(255,45,75,.8);border-right-color:rgba(255,45,75,.3)}
-@keyframes spinRing{to{transform:rotate(360deg)}}
+/* Trophy */
+.trophy{font-size:clamp(80px,14vw,160px);opacity:0;animation:trophyDrop .8s .6s cubic-bezier(.18,.89,.32,1.28) forwards;filter:drop-shadow(0 0 40px rgba(255,214,0,.6))}
+@keyframes trophyDrop{0%{opacity:0;transform:translateY(-100px) scale(.5) rotate(-20deg)}60%{opacity:1;transform:translateY(10px) scale(1.1) rotate(5deg)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0deg)}}
 
-.f-name{font-family:'Fredoka One',cursive;font-size:clamp(30px,5vw,62px);line-height:1;text-align:center;text-shadow:0 4px 20px rgba(0,0,0,.5)}
-.fighter.left .f-name{color:#7fc0ff}
-.fighter.right .f-name{color:#ff8095}
-.f-sub{font-size:clamp(13px,1.8vw,20px);font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.7)}
-.f-tag{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
+/* Pulsing glow behind trophy */
+.trophy-glow{position:absolute;width:clamp(200px,30vw,400px);height:clamp(200px,30vw,400px);border-radius:50%;background:radial-gradient(circle,rgba(255,214,0,.25),transparent 65%);animation:glowPulse 2s ease-in-out infinite;z-index:-1;pointer-events:none}
+@keyframes glowPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.3);opacity:1}}
 
-/* ── VS BADGE ── */
-.vs-zone{position:relative;z-index:25;width:0;display:flex;align-items:center;justify-content:center}
-.vs{font-family:'Fredoka One',cursive;font-size:clamp(70px,13vw,170px);line-height:1;background:linear-gradient(135deg,#fff,#FFD600 45%,#ff6a00);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 24px rgba(255,214,0,.7));opacity:0;transform:scale(3) rotate(-18deg)}
-.vs.in{animation:slam .45s cubic-bezier(.2,1.4,.3,1) .55s forwards}
-@keyframes slam{0%{opacity:0;transform:scale(3) rotate(-18deg)}60%{opacity:1;transform:scale(.85) rotate(6deg)}100%{opacity:1;transform:scale(1) rotate(-7deg)}}
-.shock{position:absolute;width:40px;height:40px;border-radius:50%;border:5px solid rgba(255,214,0,.9);opacity:0}
-.shock.go{animation:shock .6s ease-out .58s forwards}
-@keyframes shock{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(14)}}
-.flash{position:fixed;inset:0;z-index:28;background:#fff;opacity:0;pointer-events:none}
-.flash.go{animation:flash .4s ease-out .56s}
-@keyframes flash{0%{opacity:0}15%{opacity:.55}100%{opacity:0}}
+/* CHAMPION text */
+.champ{font-family:'Fredoka One',cursive;font-size:clamp(40px,9vw,120px);line-height:1;letter-spacing:3px;
+  background:linear-gradient(135deg,#FFD600 0%,#fff 30%,#FFD600 50%,#ff9d00 80%,#FFD600 100%);
+  background-size:200% 200%;animation:goldShimmer 3s ease infinite,champSlam .5s 1.2s cubic-bezier(.2,1.4,.3,1) forwards;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 20px rgba(255,214,0,.5));
+  opacity:0;transform:scale(3)}
+@keyframes champSlam{0%{opacity:0;transform:scale(3) rotate(-8deg)}50%{opacity:1;transform:scale(.9) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes goldShimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-/* ── REPLAY ── */
+/* Winner name */
+.winner{opacity:0;animation:nameReveal .7s 1.8s cubic-bezier(.34,1.56,.64,1) forwards;text-align:center}
+@keyframes nameReveal{from{opacity:0;transform:translateY(30px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+.w-name{font-family:'Fredoka One',cursive;font-size:clamp(52px,11vw,150px);line-height:1;color:#fff;
+  text-shadow:0 0 30px rgba(255,214,0,.5),0 0 80px rgba(255,214,0,.25),0 6px 30px rgba(0,0,0,.6);
+  animation:nameGlow 2s ease-in-out infinite alternate 2s}
+@keyframes nameGlow{0%{text-shadow:0 0 30px rgba(255,214,0,.4),0 0 80px rgba(255,214,0,.2),0 6px 30px rgba(0,0,0,.6)}100%{text-shadow:0 0 50px rgba(255,214,0,.7),0 0 120px rgba(255,214,0,.35),0 6px 30px rgba(0,0,0,.6)}}
+.w-year{font-family:'Baloo 2',cursive;font-size:clamp(18px,3vw,32px);font-weight:900;color:#7fc0ff;letter-spacing:2px;margin-top:4px}
+.w-cat{font-size:clamp(13px,1.8vw,20px);font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:8px}
 
+/* Orbiting stars around trophy */
+.orbit{position:absolute;animation:spin var(--os,4s) linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orbit-star{position:absolute;font-size:var(--ss,20px);filter:drop-shadow(0 0 6px rgba(255,214,0,.8))}
 
-@media(max-width:760px){
-  .stage{flex-direction:column;gap:0}
-  .arena .left{width:100%;height:58%;clip-path:polygon(0 0,100% 0,100% 82%,0 100%)}
-  .arena .right{width:100%;height:58%;top:auto;bottom:0;clip-path:polygon(0 18%,100% 0,100% 100%,0 100%)}
-  .arena .seam{top:48%;bottom:auto;left:-5%;right:-5%;width:auto;height:6px;transform:skewY(-6deg)}
-  .fighter{max-width:none}
-  .vs-zone{height:0}
-}
+/* Fireworks canvas */
+#fireworks{position:fixed;inset:0;z-index:3;pointer-events:none}
+
+/* Confetti canvas */
+#confetti{position:fixed;inset:0;z-index:25;pointer-events:none}
+
+/* ── FLASH ── */
+.flash{position:fixed;inset:0;z-index:30;background:linear-gradient(135deg,rgba(255,214,0,.9),#fff);opacity:0;pointer-events:none;animation:bigFlash .6s 1.15s ease-out}
+@keyframes bigFlash{0%{opacity:0}20%{opacity:.7}100%{opacity:0}}
+
+/* Shockwave ring */
+.shockwave{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;border:4px solid rgba(255,214,0,.9);opacity:0;z-index:28;pointer-events:none;animation:shockBurst .8s 1.2s ease-out forwards}
+@keyframes shockBurst{0%{opacity:.9;transform:translate(-50%,-50%) scale(.3)}100%{opacity:0;transform:translate(-50%,-50%) scale(18)}}
+
+/* Footer */
+.footer{position:fixed;bottom:16px;left:0;right:0;text-align:center;z-index:20;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.2);opacity:0;animation:fadeDown .6s 2.6s ease forwards}
 </style>
 </head>
 <body>
-<div class="arena">
-  <div class="side left"></div>
-  <div class="side right"></div>
-  <div class="glow"></div>
-  <div class="seam"></div>
-</div>
-<div class="grid"></div>
-<div class="sparks" id="sparks"></div>
-<div class="flash" id="flash"></div>
+<div class="arena"></div>
+<div class="beams"><div class="beam"></div><div class="beam"></div><div class="beam"></div></div>
+<div class="dust" id="dust"></div>
+<canvas id="fireworks"></canvas>
+<canvas id="confetti"></canvas>
+<div class="flash"></div>
+<div class="shockwave"></div>
 
-<div class="topbar">
-  <div class="title"><small>★ Infant Jesus Academy ★</small>STEAM GRAND FINAL</div>
-  <div class="cats" id="cats"></div>
-</div>
-
-<div class="stage" id="stage">
-  <div class="fighter left" id="fL">
-    <div class="avatar" id="fL-av">E</div>
-    <div class="f-name" id="fL-name">Ebube</div>
-    <div class="f-sub" id="fL-sub">Year 7</div>
-    <div class="f-tag">Challenger</div>
+<div class="stage">
+  <div class="school">★ Infant Jesus Academy · STEAM Competition ★</div>
+  <div style="position:relative;display:flex;align-items:center;justify-content:center;margin:18px 0 10px">
+    <div class="trophy-glow"></div>
+    <div class="trophy">🏆</div>
+    <div class="orbit" style="inset:-30px;--os:5s"><div class="orbit-star" style="top:0;left:50%;--ss:22px">⭐</div></div>
+    <div class="orbit" style="inset:-50px;--os:7s;animation-direction:reverse"><div class="orbit-star" style="bottom:0;right:0;--ss:16px">✨</div></div>
+    <div class="orbit" style="inset:-20px;--os:4s"><div class="orbit-star" style="top:50%;left:0;--ss:18px">🌟</div></div>
   </div>
-  <div class="vs-zone"><span class="shock" id="shock"></span><div class="vs" id="vs">VS</div></div>
-  <div class="fighter right" id="fR">
-    <div class="avatar" id="fR-av">S</div>
-    <div class="f-name" id="fR-name">Stephanie</div>
-    <div class="f-sub" id="fR-sub">Year 8</div>
-    <div class="f-tag">Challenger</div>
+  <div class="champ">CHAMPION</div>
+  <div class="winner">
+    <div class="w-name">YEAR 10</div>
+    <div class="w-year">YEAR 10</div>
+    <div class="w-cat">Junior Category Winner</div>
   </div>
 </div>
 
-
+<div class="footer">IJA ✦ STEAM Grand Final &nbsp;•&nbsp; Powered by D-MATHS Ed-Tech Hub</div>
 
 <script>
-var BATTLES = {
-  junior: { left:{name:'Ebube', sub:'Year 7', av:'E'}, right:{name:'Stephanie', sub:'Year 8', av:'S'} },
-  senior: { left:{name:'Year 10', sub:'Senior', av:'10'}, right:{name:'Year 11', sub:'Senior', av:'11'} }
-};
-var current = 'junior';
-
-function renderCats(){
-  document.getElementById('cats').innerHTML =
-    '<button class="cat'+(current==='junior'?' on':'')+'" onclick="selectCat(\'junior\')">Junior · Yr 7 vs 8</button>'+
-    '<button class="cat'+(current==='senior'?' on':'')+'" onclick="selectCat(\'senior\')">Senior · Yr 10 vs 11</button>';
-}
-function selectCat(c){ current=c; renderCats(); applyFighters(); runBattle(true); }
-
-function applyFighters(){
-  var b=BATTLES[current];
-  document.getElementById('fL-av').textContent=b.left.av;
-  document.getElementById('fL-name').textContent=b.left.name;
-  document.getElementById('fL-sub').textContent=b.left.sub;
-  document.getElementById('fR-av').textContent=b.right.av;
-  document.getElementById('fR-name').textContent=b.right.name;
-  document.getElementById('fR-sub').textContent=b.right.sub;
-}
-
-/* ── Web Audio impact (only on user gesture) ── */
-var _ax=null;
-function ax(){ if(!_ax){try{_ax=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}} return _ax; }
-function whoosh(){
-  var a=ax(); if(!a)return;
-  var n=a.createBufferSource(),buf=a.createBuffer(1,a.sampleRate*0.4,a.sampleRate),d=buf.getChannelData(0);
-  for(var i=0;i<d.length;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);}
-  n.buffer=buf;var bp=a.createBiquadFilter();bp.type='bandpass';bp.frequency.setValueAtTime(300,a.currentTime);bp.frequency.exponentialRampToValueAtTime(2400,a.currentTime+0.35);
-  var g=a.createGain();g.gain.value=0.25;n.connect(bp);bp.connect(g);g.connect(a.destination);n.start();
-}
-function boom(){
-  var a=ax(); if(!a)return;
-  var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(180,a.currentTime);o.frequency.exponentialRampToValueAtTime(45,a.currentTime+0.45);
-  g.gain.setValueAtTime(0.5,a.currentTime);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+0.6);
-  o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+0.62);
-  /* metallic clang */
-  var n=a.createBufferSource(),buf=a.createBuffer(1,a.sampleRate*0.25,a.sampleRate),d=buf.getChannelData(0);
-  for(var i=0;i<d.length;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);}
-  n.buffer=buf;var hp=a.createBiquadFilter();hp.type='highpass';hp.frequency.value=2500;
-  var g2=a.createGain();g2.gain.value=0.3;n.connect(hp);hp.connect(g2);g2.connect(a.destination);n.start();
-}
-
-function burstSparks(){
-  var host=document.getElementById('sparks');
-  var cols=['#FFD600','#fff','#0a84ff','#FF2D4B','#ff9d00'];
-  for(var i=0;i<34;i++){
-    var s=document.createElement('div');
-    var sz=4+Math.random()*9, ang=Math.random()*Math.PI*2, dist=80+Math.random()*340;
-    var dx=Math.cos(ang)*dist, dy=Math.sin(ang)*dist;
-    s.style.cssText='position:absolute;left:50%;top:50%;width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+cols[i%cols.length]+';box-shadow:0 0 10px '+cols[i%cols.length]+';transform:translate(-50%,-50%);opacity:1;pointer-events:none';
-    host.appendChild(s);
-    (function(el,dx,dy){
-      el.animate([{transform:'translate(-50%,-50%) translate(0,0) scale(1)',opacity:1},
-                  {transform:'translate(-50%,-50%) translate('+dx+'px,'+dy+'px) scale(0)',opacity:0}],
-                 {duration:600+Math.random()*300,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=function(){el.remove();};
-    })(s,dx,dy);
+/* ── Gold dust particles ── */
+(function(){
+  var host=document.getElementById('dust');
+  for(var i=0;i<50;i++){
+    var d=document.createElement('div');
+    var sz=2+Math.random()*5;
+    var x=Math.random()*100,startY=Math.random()*100;
+    var dur=4+Math.random()*6,delay=Math.random()*6;
+    d.style.cssText='position:absolute;left:'+x+'%;top:'+startY+'%;width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:rgba(255,214,0,'+(0.3+Math.random()*0.5)+');box-shadow:0 0 '+(4+Math.random()*8)+'px rgba(255,214,0,.4);animation:dustFloat '+dur+'s '+delay+'s ease-in-out infinite;pointer-events:none';
+    host.appendChild(d);
   }
-}
+  var style=document.createElement('style');
+  style.textContent='@keyframes dustFloat{0%{transform:translateY(0) translateX(0);opacity:.6}50%{transform:translateY(-60px) translateX('+(Math.random()>0.5?'':'-')+'30px);opacity:1}100%{transform:translateY(-120px) translateX(0);opacity:0}}';
+  document.head.appendChild(style);
+})();
 
-var _loopTimer=null;
-function runBattle(withSound){
-  if(_loopTimer){clearTimeout(_loopTimer);_loopTimer=null;}
-  var fL=document.getElementById('fL'),fR=document.getElementById('fR'),vs=document.getElementById('vs'),
-      shock=document.getElementById('shock'),flash=document.getElementById('flash'),stage=document.getElementById('stage');
-  /* reset */
-  fL.classList.remove('in','out');fR.classList.remove('in','out');vs.classList.remove('in','out');
-  shock.classList.remove('go');flash.classList.remove('go');stage.classList.remove('shake');
-  void fL.offsetWidth; /* force reflow to restart animations */
-  /* fire slam-in */
-  fL.classList.add('in');fR.classList.add('in');vs.classList.add('in');
-  shock.classList.add('go');flash.classList.add('go');
-  if(withSound){ try{ if(ax()&&ax().state==='suspended')ax().resume(); whoosh(); }catch(e){} }
-  setTimeout(function(){
-    stage.classList.add('shake');
-    burstSparks();
-    if(withSound){ try{ boom(); }catch(e){} }
-  }, 580);
-  /* hold 4s, then fade out, then restart */
-  _loopTimer=setTimeout(function(){
-    fL.classList.add('out');fR.classList.add('out');vs.classList.add('out');
-    _loopTimer=setTimeout(function(){ runBattle(withSound); }, 1200);
-  }, 5000);
-}
+/* ── Fireworks ── */
+(function(){
+  var cv=document.getElementById('fireworks'),ctx=cv.getContext('2d');
+  var W,H;function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  resize();addEventListener('resize',resize);
+  var particles=[],rockets=[];
+  var colors=['#FFD600','#fff','#ff6a00','#FF2D4B','#0a84ff','#00C853','#c17aff'];
+  function Rocket(){
+    this.x=W*(.15+Math.random()*.7);this.y=H;
+    this.tx=W*(.1+Math.random()*.8);this.ty=H*(.1+Math.random()*.35);
+    this.life=0;this.maxLife=40+Math.random()*30;this.done=false;
+  }
+  Rocket.prototype.update=function(){
+    this.life++;var t=this.life/this.maxLife;
+    this.x+=(this.tx-this.x)*0.04;this.y+=(this.ty-this.y)*0.04;
+    if(this.life>=this.maxLife){this.done=true;explode(this.x,this.y);}
+  };
+  Rocket.prototype.draw=function(){
+    ctx.beginPath();ctx.arc(this.x,this.y,2.5,0,Math.PI*2);ctx.fillStyle='#FFD600';ctx.fill();
+  };
+  function explode(x,y){
+    var col=colors[Math.floor(Math.random()*colors.length)];
+    var n=60+Math.floor(Math.random()*40);
+    for(var i=0;i<n;i++){
+      var a=Math.random()*Math.PI*2,spd=1.5+Math.random()*5;
+      particles.push({x:x,y:y,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd,life:0,maxLife:40+Math.random()*30,col:col,sz:1.5+Math.random()*2.5});
+    }
+  }
+  var frame=0;
+  function loop(){
+    requestAnimationFrame(loop);
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='rgba(5,6,12,.18)';ctx.fillRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    frame++;
+    if(frame>70&&Math.random()<0.06) rockets.push(new Rocket());
+    for(var i=rockets.length-1;i>=0;i--){rockets[i].update();rockets[i].draw();if(rockets[i].done)rockets.splice(i,1);}
+    for(var j=particles.length-1;j>=0;j--){
+      var p=particles[j];p.life++;p.x+=p.vx;p.y+=p.vy;p.vy+=0.06;p.vx*=0.985;p.vy*=0.985;
+      var alpha=1-p.life/p.maxLife;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.sz*alpha,0,Math.PI*2);ctx.fillStyle=p.col;ctx.globalAlpha=alpha*0.9;ctx.fill();ctx.globalAlpha=1;
+      if(p.life>=p.maxLife)particles.splice(j,1);
+    }
+  }
+  loop();
+})();
 
-renderCats();
-applyFighters();
-/* First run silent (browser blocks autoplay audio until user gesture).
-   Once user clicks a tab, sound activates and persists through the loop. */
-runBattle(false);
-document.addEventListener('click',function _unlk(){ runBattle(true); document.removeEventListener('click',_unlk); },{once:true});
+/* ── Confetti ── */
+(function(){
+  var cv=document.getElementById('confetti'),ctx=cv.getContext('2d');
+  var W,H;function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  resize();addEventListener('resize',resize);
+  var cols=['#FFD600','#FF2D4B','#0a84ff','#00C853','#c17aff','#ff6a00','#fff'];
+  var pieces=[];
+  function burst(){
+    for(var i=0;i<120;i++){
+      pieces.push({x:W/2+(-200+Math.random()*400),y:H*0.35,vx:(Math.random()-.5)*14,vy:-4-Math.random()*10,
+        w:6+Math.random()*8,h:4+Math.random()*6,col:cols[Math.floor(Math.random()*cols.length)],
+        rot:Math.random()*360,rv:(-3+Math.random()*6),grav:0.15+Math.random()*0.1,life:0});
+    }
+  }
+  setTimeout(burst,1300);setInterval(burst,4500);
+  function loop(){
+    requestAnimationFrame(loop);
+    ctx.clearRect(0,0,W,H);
+    for(var i=pieces.length-1;i>=0;i--){
+      var p=pieces[i];p.life++;p.x+=p.vx;p.y+=p.vy;p.vy+=p.grav;p.vx*=0.99;p.rot+=p.rv;
+      var alpha=Math.max(0,1-p.life/180);
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.globalAlpha=alpha;ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      if(p.y>H+50||alpha<=0)pieces.splice(i,1);
+    }
+  }
+  loop();
+})();
+
+/* ── Victory sound ── */
+(function(){
+  document.addEventListener('click',function _u(){
+    try{
+      var a=new (window.AudioContext||window.webkitAudioContext)();
+      /* Fanfare chord */
+      function tone(f,start,dur,vol){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(vol,a.currentTime+start);g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+start+dur);o.connect(g);g.connect(a.destination);o.start(a.currentTime+start);o.stop(a.currentTime+start+dur);}
+      tone(523,0,.6,.2);tone(659,.1,.5,.18);tone(784,.2,.5,.16);tone(1047,.3,.8,.22);tone(1319,.4,.6,.15);tone(1568,.5,.7,.12);
+      /* Crowd cheer */
+      var buf=a.createBuffer(1,a.sampleRate*2,a.sampleRate),d=buf.getChannelData(0);
+      for(var i=0;i<d.length;i++){var env=Math.sin(Math.PI*i/d.length);d[i]=(Math.random()*2-1)*env*(Math.random()<0.07?1:0.3);}
+      var src=a.createBufferSource();src.buffer=buf;var bp=a.createBiquadFilter();bp.type='bandpass';bp.frequency.value=2400;bp.Q.value=0.6;
+      var g=a.createGain();g.gain.value=0.18;src.connect(bp);bp.connect(g);g.connect(a.destination);src.start(a.currentTime+0.3);
+    }catch(e){}
+    document.removeEventListener('click',_u);
+  },{once:true});
+})();
 </script>
 </body>
 </html>
